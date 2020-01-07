@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - javademo",
+            "request": "launch",
+            "mainClass": "javademo",
+            "projectName": "recursion_91968c3d"
+        }
+    ]
+}
