@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
- using namespace std;
+using namespace std;
 vector<bool> r(10,false);
 vector<bool> c(10,false);
 vector<bool> ad(r.size()+c.size()-1,false);
