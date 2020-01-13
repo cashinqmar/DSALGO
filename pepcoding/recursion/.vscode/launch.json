@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - crossword",
+            "request": "launch",
+            "mainClass": "crossword",
+            "projectName": "recursion_de407626"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - javademo",
             "request": "launch",
             "mainClass": "javademo",
