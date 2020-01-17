@@ -38,13 +38,13 @@ int solve(string str,int idx){
     int count=0;
     int ch=str[idx]-'a';
     for(int i=9;i>=0;i--){
-        int val=(1<<i);
-     if((vis&(val))==0){
-         vis^=val;
+        int mask=(1<<i);
+     if((vis&(mask))==0){
+         vis^=mask;
          mapping[ch]=i;
          count+=solve(str,idx+1);
          mapping[ch]=0;
-         vis^=val;
+         vis^=mask;
      }
     }
     return count;

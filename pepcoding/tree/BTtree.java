@@ -2,13 +2,13 @@ import java.util.ArrayList;
 
 class BTtree{
    public static void main(String[] args) {
-    int[] arr = { 10, 20, 30, -1, -1, 40, -1, -1, 50, 60, 80, -1, -1, -1, 70, 90, -1, 100, -1, -1, -1 };
+    int[] arr = { 32,24,20,-1,-1,25,75,60,-1,-1,85,-1,-1};
     Node root = create(arr);
-   // display(root);
-    ArrayList<Node> ans= roottonodepath(root, 100);
-    for(Node ele : ans){
-        System.out.print(ele.data+" ");
-    }
+   display(root);
+    // ArrayList<Node> ans= roottonodepath(root, 100);
+    // for(Node ele : ans){
+    //     System.out.print(ele.data+" ");
+    // }
    }
  
    public static class Node{
@@ -81,4 +81,46 @@ class BTtree{
     }
     return null;
 }
+public static class BSTpair{
+    boolean isBST=true;
+    int count=0;
+    int lBSTsize=0;
+    Node LBST=null;
+    int max=(int)1e8;
+    int min=(int) -1e8;
+}
+
+static BSTpair sol(Node root){
+  if(root==null){
+      BSTpair ans= new BSTpair();
+      return ans;
+  }
+  BSTpair left=sol(root.left);
+  BSTpair right=sol(root.right);
+
+  BSTpair myans= new  BSTpair(); 
+  myans.count=left.count+right.count;
+  if(left.isBST&&right.isBST&&(root.data>left.max&&root.data<=right.min)){
+    myans.count++;
+    myans.lBSTsize=left.lBSTsize + right.lBSTsize;
+    myans.LBST=root;
+  }
+  else{
+      myans.isBST=false;
+      if(left.lBSTsize>right.lBSTsize){
+          myans.lBSTsize=left.lBSTsize;
+          myans.LBST=left.LBST;
+      }
+      else{
+          myans.lBSTsize=right.lBSTsize;
+          myans.LBST=right.LBST;
+      }
+  }
+  myans.max=Math.max(Math.max(left.max,right.max),root.data);
+  myans.min=Math.min(Math.min(left.min,right.min),root.data);
+
+  return myans;
+}
+
+
 }
