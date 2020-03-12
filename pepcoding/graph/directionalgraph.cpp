@@ -1,6 +1,9 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<vector>
+#include<stack>
+#include<queue>
 using namespace std;
-int n=6;
+int n=8;
 vector<vector<int>> graph(n,vector<int>());
 
 void addedge(int u,int v){
@@ -17,45 +20,128 @@ void display(){
     }
 }
 
+
 void creategraph(){
-    addedge(5, 2); 
-    addedge(5, 0); 
-    addedge(4, 0); 
-    addedge(4, 1); 
-    addedge(2, 3); 
-    addedge(3, 1); 
+    addedge(7,6); 
+    addedge(7,5); 
+    addedge(6,4); 
+    addedge(5,4); 
+    addedge(6,3); 
+    addedge(5,2); 
+    addedge(3,1);
+    addedge(2,1);
+    addedge(1,0);
+    // addedge(0,7);
+
 }
 
-void topological(vector<vector<int>> &graph,int sr,stack<int> &st,vector<bool> &vis){
-    vis[sr]=true;
-    //cout<<sr<<endl;
-    for(int i=0;i<graph[sr].size();i++){
-        //cout<<graph[sr][i]<<" "<<vis[graph[sr][i]]<<endl;
-        if(!vis[graph[sr][i]]){
-            topological(graph,graph[sr][i],st,vis);
+void kahnsalgo(){
+    vector<int> incoming(n,0);
+    for(int i=0;i<n;i++){
+        for(int e:graph[i]){
+          incoming[e]++;     
+      }
+    }
+
+    queue<int> ans,q;
+    for(int i=0;i<n;i++){
+        if(incoming[i]==0)q.push(i);
+    }
+
+    while(!q.empty()){
+        int temp=q.front();
+        q.pop();
+
+        ans.push(temp);
+        for(int e:graph[temp]){
+            if(--incoming[e]==0){
+                q.push(e);
+            }
         }
     }
-    st.push(sr);
-    
+
+    if(graph.size()!=ans.size()){
+        cout<<" cycle is present"<<endl;
+    }
+    else{
+        while(ans.size()!=0){
+            cout<<ans.front()<<" ";
+            ans.pop();
+        }
+    }
 }
 
-void solve(){
-creategraph();
-display();
+void topodfs(vector<vector<int>> &graph,int src,vector<bool>& vis,stack<int>& st){
+    vis[src]=true;
 
-vector<bool> vis(n,false);
+    for(int i=0;i<graph[src].size();i++){
+        if(!vis[graph[src][i]]){
+            topodfs(graph,graph[src][i],vis,st);
+        }
+    }
+    st.push(src);
+
+}
+void topologicalsort(vector<vector<int>> &graph){
 stack<int> st;
-for (int i = 0; i < n; i++){ 
-      if (!vis[i]) 
-        topological(graph,i,st,vis);
+vector<bool> vis(n,false);
+
+for(int i=0;i<n;i++){
+    if(!vis[i]){
+        topodfs(graph,i, vis,st);
+    }
 }
- 
+
 while(!st.empty()){
     cout<<st.top()<<" ";
     st.pop();
+}
 
 }
 
+
+bool cycledfs(int src,vector<bool>& vis,vector<bool>& cycle,stack<int> & st){
+    vis[src]=true;
+    cycle[src]=true;
+
+    bool res=false;
+    for(int i=0;i<graph[src].size();i++){
+        if(!vis[graph[src][i]]&&!res){
+            res|=cycledfs(graph[src][i],vis,cycle,st);
+        }
+        else if(cycle[graph[src][i]])return true;
+    }
+    cycle[src]=false;
+    st.push(src);
+    return res;
+}
+void findcycle(){
+    vector<bool> vis(n,false);
+    vector<bool> cycle(n,false);
+
+    stack<int> st;
+    bool res=false;
+    for(int i=0;i<n;i++)if(!vis[i])
+    res|=cycledfs(i,vis,cycle,st);
+    
+    if(res){
+        cout<<" cycle "<<endl;
+    }
+    else{
+    while(!st.empty()){
+    cout<<st.top()<<" ";
+    st.pop();
+    }
+
+}
+
+}
+void solve(){
+creategraph();
+display();
+// topologicalsort(graph);
+// kahnsalgo();
+findcycle();
 }
 
 

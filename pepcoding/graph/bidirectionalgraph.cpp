@@ -9,7 +9,7 @@ class edge{
         this->w=w;
     }
 };
-int n;
+int n=8;
 vector<vector<edge*>> graph(n,vector<edge*>());
 
 void addedge(int u,int v,int w){
@@ -26,6 +26,8 @@ void display(){
         cout<<endl;
     }
 }
+
+
 void removeedge(int u,int v){
     int udx=-1;
     int vdx=-1;
@@ -122,27 +124,81 @@ void hamiltonian(int sr,int osr,vector<bool>& visited,int count,string ans){
     visited[sr]=false;
 }
 
+
+void dfs(int sr,vector<int>& low,vector<int>& dis,vector<int>& art,vector<bool>& vis,vector<int> &par){
+      static int time=0;
+    low[sr]=dis[sr]=time;
+    time++;
+    vis[sr]=true;
+   int children=0;
+
+    for(int i=0;i<graph[sr].size();i++){
+        int node=graph[sr][i]->v;
+
+        if(!vis[node]){
+            par[node]=sr;
+
+            dfs(node,low,dis,art,vis,par);
+
+            children++;
+
+            low[sr]=min(low[sr],low[node]);
+
+                if(par[sr]!=-1&&dis[sr]<=low[node]){
+                art[sr]++;
+            }
+
+
+            if(par[sr]==-1&&children>1&&dis[sr]<=low[node]){
+              art[sr]++;
+            }
+
+            if(dis[sr]<low[node]){
+                cout<<"edge "<<sr<<" "<<node<<endl;
+            }
+        }
+
+        else if(par[sr]!=node){
+       low[sr]=min(low[sr],dis[node]);
+        }
+    }
+}
 void creategraph(){
     addedge(0, 1, 10);
-    addedge(0, 3, 10);
-    addedge(1, 2, 10);
+    addedge(0, 2, 10);
     addedge(2, 3, 40);
-    addedge(3, 4, 2);
-    addedge(4, 5, 2);
-    addedge(4, 6, 8);
-    addedge(5, 6, 3);
-    addedge(0,6,10);
+    addedge(3, 1, 2);
+    // addedge(4, 1, 2);
+    addedge(4, 3, 8);
+    addedge(5, 4, 3);
+    addedge(4,7,10);
+    addedge(5,6,10);
+    addedge(6,7,9);
 }
 
 void solve(){
 creategraph();
-display();
+// display();
+vector<bool> vis(n,false);
+vector<int> low(n,0);
+vector<int> dis(n,0);
+vector<int> art(n,0);
+vector<int> par(n,-1);
+
+for(int i=0;i<n;i++){
+    if(!vis[i]){
+        dfs(i,low,dis,art,vis,par);
+    }
+}
+for(int i=0;i<n;i++){
+    if(art[i]>0)cout<<i<<" ";
+}
 // removeedge(3, 2);
 // removevertex(3);
 // display();
-vector<bool> vis(n,false);
+// vector<bool> vis(n,false);
 // cout<<countpaths(0,6,vis,"");
-hamiltonian(0,0,vis,0,"");
+// hamiltonian(0,0,vis,0,"");
 }
 
 

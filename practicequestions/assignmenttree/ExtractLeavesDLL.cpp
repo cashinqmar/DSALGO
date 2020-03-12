@@ -4,67 +4,72 @@ class TreeNode{
     public:
     TreeNode* left;
     TreeNode* right;
-    TreeNode* rightnext;
     int val;
     TreeNode(int val){
         left=NULL;
         right=NULL;
-        rightnext=NULL;
         this->val=val;
     }
 };
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-TreeNode * getnextright(TreeNode * root){
-    TreeNode * temp=root->rightnext;
 
-    while(temp!=NULL){
-        if(temp->left){
-            return temp->left;
-        }
-        else if(temp->right){
-            return temp->right;
-        }
-        else{
-            temp=temp->rightnext;
-        }
-    }
-    return NULL;
-}
-void solve(TreeNode * root){
-TreeNode* curr=root;
+TreeNode* head=NULL;
 
-while(curr!=NULL){
-    TreeNode * itr=curr;
-    while(itr!=NULL){
-        if(itr->left){
-            if(itr->right){
-                itr->left->rightnext=itr->right;
-                 itr->right->rightnext=getnextright(itr);
-            }
-            else{
-                itr->left->rightnext=getnextright(itr);
-            }
-        }
-        else if(itr->right){
-            itr->right->rightnext=getnextright(itr);
-        }
-            itr=itr->rightnext;
-    }
+TreeNode* DLL(TreeNode * node,bool isleft,TreeNode *parent){
+    if(node==NULL)return NULL;
+static TreeNode* prev = NULL; 
 
-    if(curr->left){
-        curr=curr->left;
-    }
-    else if(curr->right){
-        curr=curr->right;
+    if(!node->left&&!node->right){
+    if(prev==NULL){
+    //   TreeNode * nnode=new TreeNode(node->val);
+      head=node;
+      prev=node;
     }
     else{
-        curr=getnextright(curr);
+        // TreeNode * nnode=new TreeNode(node->val);
+        prev->right=node;
+        node->left=prev;
+        prev=node;
     }
+   return NULL;
+    // if(isleft)parent->left=NULL;
+    // else parent->right=NULL;
 }
+   node->left= DLL(node->left,true,node);
+   node->right= DLL(node->right,false,node);
 
 }
+
+TreeNode* solve(TreeNode* root){
+if(!root->left&&!root->right){
+    head=root;
+}
+ TreeNode*ans=   DLL(root,true,root);
+ TreeNode* temp=(head);
+TreeNode* tail=NULL;
+
+ while(temp){
+     cout<<temp->val<<" ->";
+     tail=temp;
+     temp=temp->right;
+ }
+cout<<" ."<<endl;
+temp=tail;
+while(temp){
+     cout<<temp->val<<" ->";
+     tail=temp;
+     temp=temp->left;
+ }
+ cout<<" ."<<endl;
+return ans;
+}
+
+
+
+
+
 
 
 
@@ -88,11 +93,9 @@ int main(){
         cin>>x;
         arr[i]=x;
     }
-
- 
     TreeNode* root=createlevel(arr);
     // display(root);
-    solve(root);
+    root=solve(root);
     display(root);
 
 }
@@ -123,7 +126,6 @@ void display(TreeNode* root){
     s+=root->left?to_string(root->left->val):".";
     s+=" <= "+to_string(root->val)+" => ";
     s+=root->right?to_string(root->right->val):".";
-    s+="["+ (root->rightnext!=NULL?to_string(root->rightnext->val):"null")+"]";
     cout<<s<<endl;
     display(root->left);
     display(root->right);

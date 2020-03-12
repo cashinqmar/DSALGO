@@ -206,3 +206,33 @@ static int  nodetonode(Node root){
 
 
 }
+int n=graph.size();
+vector<int> color(n,-1);
+
+color[0]=1;
+queue<int> q;
+q.push(0);
+
+while(!q.empty()){
+    int temp=q.front();
+    q.pop();
+    
+    if(search(graph,temp,temp))return false;               
+     for(int i=0;i<graph[temp].size();i++){
+         if(color[graph[temp][i]]=-1){
+             color[graph[temp][i]]=1-color[temp];
+             q.push(graph[temp][i]);
+         }
+      else if(color[graph[temp][i]]==color[temp])return false;
+}
+}
+return true;
+
+bool search(vector<vector<int>>& graph,int u,int v){
+        
+    for(int i=0;i<graph[u].size();i++){
+        if(graph[u][i]==v)return true;
+    }
+    
+    return false;
+}

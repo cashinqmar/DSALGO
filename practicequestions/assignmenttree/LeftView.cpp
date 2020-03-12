@@ -4,67 +4,45 @@ class TreeNode{
     public:
     TreeNode* left;
     TreeNode* right;
-    TreeNode* rightnext;
     int val;
     TreeNode(int val){
         left=NULL;
         right=NULL;
-        rightnext=NULL;
         this->val=val;
     }
 };
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-TreeNode * getnextright(TreeNode * root){
-    TreeNode * temp=root->rightnext;
 
-    while(temp!=NULL){
-        if(temp->left){
-            return temp->left;
-        }
-        else if(temp->right){
-            return temp->right;
-        }
-        else{
-            temp=temp->rightnext;
-        }
-    }
-    return NULL;
-}
-void solve(TreeNode * root){
-TreeNode* curr=root;
 
-while(curr!=NULL){
-    TreeNode * itr=curr;
-    while(itr!=NULL){
-        if(itr->left){
-            if(itr->right){
-                itr->left->rightnext=itr->right;
-                 itr->right->rightnext=getnextright(itr);
-            }
-            else{
-                itr->left->rightnext=getnextright(itr);
+
+
+
+void solve(TreeNode* root){
+   queue<TreeNode *> q;
+        q.push(root);
+        
+        while(!q.empty()){
+            int s=q.size();
+            int k=s;
+            
+            while(s--){
+                TreeNode * temp=q.front();
+                q.pop();
+                if(k-1==s){
+                cout<<temp->val<<" ";
+                }
+                if(temp->left)q.push(temp->left);
+                if(temp->right)q.push(temp->right);
             }
         }
-        else if(itr->right){
-            itr->right->rightnext=getnextright(itr);
-        }
-            itr=itr->rightnext;
-    }
-
-    if(curr->left){
-        curr=curr->left;
-    }
-    else if(curr->right){
-        curr=curr->right;
-    }
-    else{
-        curr=getnextright(curr);
-    }
 }
 
-}
+
+
+
+
 
 
 
@@ -88,12 +66,9 @@ int main(){
         cin>>x;
         arr[i]=x;
     }
-
- 
     TreeNode* root=createlevel(arr);
     // display(root);
     solve(root);
-    display(root);
 
 }
 
@@ -121,9 +96,8 @@ void display(TreeNode* root){
 
     string s;
     s+=root->left?to_string(root->left->val):".";
-    s+=" <= "+to_string(root->val)+" => ";
+    s+="->"+to_string(root->val)+"<-";
     s+=root->right?to_string(root->right->val):".";
-    s+="["+ (root->rightnext!=NULL?to_string(root->rightnext->val):"null")+"]";
     cout<<s<<endl;
     display(root->left);
     display(root->right);
