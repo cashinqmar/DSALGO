@@ -14,8 +14,38 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
+TreeNode * bstinorder(vector<int> & arr,int start,int end){
+    if(start<=end){
+    int m=(end+start)/2;
     
+    TreeNode * temp=new TreeNode(arr[m]);
+    temp->left=bstinorder(arr,start,m-1);
+    temp->right=bstinorder(arr,m+1,end);
+    return temp;
+    }
+    else return nullptr;
+}
+  
+   TreeNode* BSTFromPreOder(vector<int>&arr, int lb, int ele, int ub,int &idx) {
+
+       if(idx>=arr.size()||ele>ub||ele<lb)return nullptr;
+       TreeNode * node=new TreeNode(arr[idx]);
+       idx++;
+       if(idx<arr.size()){
+           node->left=BSTFromPreOder(arr,lb,arr[idx],node->val,idx);
+       }
+       if(idx<arr.size()){
+           node->right=BSTFromPreOder(arr,node->val,arr[idx],ub,idx);
+       }
+       return node;
+    }
+void solve(vector<int>& arr){
+    // sort(arr.begin(),arr.end());
+    // TreeNode * root=bstinorder(arr,0,arr.size()-1);
+    int idx=0;
+    TreeNode* root=BSTFromPreOder(arr,INT_MIN,arr[0],INT_MAX,idx);  
+
+    display(root);
 }
 
 int main(){
@@ -27,8 +57,8 @@ int main(){
         cin>>x;
         arr[i]=x;
     }
-    TreeNode* root=createlevel(arr);
-    display(root);
+    // TreeNode* root=createlevel(arr);
+    solve(arr);
 
 }
 
@@ -56,7 +86,7 @@ void display(TreeNode* root){
 
     string s;
     s+=root->left?to_string(root->left->val):".";
-    s+=" => "+to_string(root->val)+" <= ";
+    s+=" <= "+to_string(root->val)+" => ";
     s+=root->right?to_string(root->right->val):".";
 
     cout<<s<<endl;

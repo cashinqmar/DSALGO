@@ -13,9 +13,30 @@ class TreeNode{
 };
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
+void insert(TreeNode *&root,int data,int &succ){
+    if(root==NULL){
+        root=new TreeNode(data);
+    }
 
-void solve(){
+    else if(root->val>data){
+        succ=root->val;
+        insert(root->left,data,succ);
+    }
+    else{
+        insert(root->right,data,succ);
+    }
+}
+void solve(vector<int> &arr){
+ TreeNode*  root=NULL;
+    for(int i=arr.size()-1;i>=0;i--){
+        int succ=-1;
+        insert(root,arr[i],succ);
+        arr[i]=succ;
+    }
+    for(auto i:arr)cout<<i<<" ";
+    cout<<"."<<endl;
     
+    display(root);
 }
 
 int main(){
@@ -27,8 +48,9 @@ int main(){
         cin>>x;
         arr[i]=x;
     }
-    TreeNode* root=createlevel(arr);
-    display(root);
+    // TreeNode* root=createlevel(arr);
+    // display(root);
+    solve(arr);
 
 }
 

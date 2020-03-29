@@ -14,13 +14,30 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
-    
+ int kthSmallest(TreeNode* root, int k) {
+        TreeNode * temp=root;
+        stack<TreeNode*> st;
+        while(!st.empty()||temp!=NULL){
+            while(temp){
+                st.push(temp);
+               temp= temp->left;
+            }
+            temp=st.top();
+            st.pop();
+            k--;
+            if(k==0)return temp->val;
+            temp=temp->right;
+        }
+        return 0;
+    }
+void solve(TreeNode *root,int k){
+
+    cout<<kthSmallest(root,k);
 }
 
 int main(){
-    int n;
-    cin>>n;
+    int n,k;
+    cin>>k>>n;
     vector<int> arr(n);
     for(int i=0;i<n;i++){
         int x;
@@ -28,7 +45,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root,k);
 
 }
 

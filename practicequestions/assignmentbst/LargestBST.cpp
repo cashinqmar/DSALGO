@@ -14,8 +14,61 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
-    
+
+ int bstsize=0;
+ TreeNode* bstroot=NULL;
+
+class baby{
+    public:
+    bool isbst;
+    int size;
+    int minm;
+    int maxm;
+};
+baby helper(TreeNode *root){
+    if(root==NULL){
+      baby temp;
+       temp.isbst=true;
+       temp.size=0;
+       temp.minm=INT_MAX;
+       temp.maxm=INT_MIN;
+       return temp;
+    }
+
+   baby l=helper(root->left);
+   baby r=helper(root->right);
+
+   if(l.isbst&&r.isbst){
+       int lval=root->left?root->left->val:INT_MIN;
+       int rval=root->right?root->right->val:INT_MAX;
+
+       if(root->val>lval&&root->val<rval&&l.maxm<root->val&&root->val<r.minm){
+         baby temp;
+       temp.isbst=true;
+       temp.size=l.size+r.size+1;
+       temp.minm=min(l.minm,root->val);
+       temp.maxm=max(r.maxm,root->val);
+
+       if(bstsize<temp.size){
+           bstsize=temp.size;
+           bstroot=root;
+       }
+       return temp;
+
+       }
+   }
+
+       
+         baby temp;
+       temp.isbst=false;
+       temp.size=0;
+       temp.minm=root->val;
+       temp.maxm=root->val;
+       return temp;
+   }
+void solve(TreeNode *root){
+    helper(root);
+    cout<<bstroot->val<<" "<<bstsize;
 }
 
 int main(){
@@ -28,7 +81,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root);
 
 }
 

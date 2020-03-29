@@ -14,8 +14,24 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
-    
+int ans=0;
+
+int maxpathsum(TreeNode * root){
+    if(root==NULL)return 0;
+    int l=maxpathsum(root->left);
+    int r=maxpathsum(root->right);
+
+    if(root->val<0)return 0;
+    else{
+
+        int t=max(l,r)+root->val;
+        ans=max(ans,max(t,l+r+root->val));
+        return t;
+    }
+}
+void solve(TreeNode*root){
+    maxpathsum(root);
+    cout<<ans;
 }
 
 int main(){
@@ -28,7 +44,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root);
 
 }
 
@@ -56,7 +73,7 @@ void display(TreeNode* root){
 
     string s;
     s+=root->left?to_string(root->left->val):".";
-    s+=" => "+to_string(root->val)+" <= ";
+    s+=" <= "+to_string(root->val)+" => ";
     s+=root->right?to_string(root->right->val):".";
 
     cout<<s<<endl;

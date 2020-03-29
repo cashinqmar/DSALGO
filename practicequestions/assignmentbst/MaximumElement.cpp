@@ -14,13 +14,42 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
+
+TreeNode* lca(TreeNode* root, int p, int q){
+        if(root==NULL)return NULL;
+       
+        if(root->val<p){
+            return lca(root->right,p,q);
+        }
+        else if(root->val>q){
+             return lca(root->left,p,q);
+        }
+        else return root;
+    }
+
+void helper(TreeNode *root,int data,int & maxm){
+    if(root==NULL)return;
+maxm=max(root->val,maxm);
+    if(root->val==data)return;
     
+
+    
+    if(root->val>data)helper(root->left,data,maxm);
+    else helper(root->right,data,maxm);
+}
+void solve(TreeNode * root,int l,int r){
+    if(l>r)swap(l,r);
+    TreeNode * ancestor=lca(root,l,r);
+
+    int maxm=INT_MIN;
+    helper(ancestor,l,maxm);
+    helper(ancestor,r,maxm);
+    cout<<maxm;
 }
 
 int main(){
-    int n;
-    cin>>n;
+    int n,l,r;
+    cin>>l>>r>>n;
     vector<int> arr(n);
     for(int i=0;i<n;i++){
         int x;
@@ -28,7 +57,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root,l,r);
 
 }
 

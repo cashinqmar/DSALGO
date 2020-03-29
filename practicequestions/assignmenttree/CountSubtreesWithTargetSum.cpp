@@ -14,13 +14,23 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
-    
+int helper(TreeNode*root,int tar,int &count){
+    if(root==NULL)return 0;
+    int l=helper(root->left,tar,count);
+    int  r=helper(root->right,tar,count);
+    int sum=l+r+root->val;
+    if(sum==tar)count++;
+    return sum;
+}
+void solve(TreeNode * root,int tar){
+int count=0;
+helper(root,tar,count);
+cout<<count;
 }
 
 int main(){
-    int n;
-    cin>>n;
+    int n,tar;
+    cin>>tar>>n;
     vector<int> arr(n);
     for(int i=0;i<n;i++){
         int x;
@@ -28,7 +38,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root,tar);
 
 }
 

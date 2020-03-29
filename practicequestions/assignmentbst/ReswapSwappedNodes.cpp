@@ -14,8 +14,40 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
-    
+
+     TreeNode*first=NULL;
+   TreeNode*second=NULL;
+
+   void inorder(TreeNode *root){
+   static TreeNode* prev=NULL;
+  static int count=0;
+
+    if(!root)return ;
+    inorder(root->left);
+    if(!prev){
+        prev=root;
+    }
+    else{
+        if(root->val<prev->val&&count==0){
+            first=prev;
+            second=root;
+            count++;
+        }
+
+         if(root->val<prev->val&&count==1){
+            second=root;
+        }
+        prev=root;
+    }
+    inorder(root->right);
+}
+void solve(TreeNode * root){
+    inorder(root);
+    int data=first->val;
+    first->val=second->val;
+    second->val=data;
+
+    display(root);
 }
 
 int main(){
@@ -28,7 +60,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root);
 
 }
 

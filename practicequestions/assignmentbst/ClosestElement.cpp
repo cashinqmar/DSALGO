@@ -14,13 +14,25 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
-    
+void helper(TreeNode* root,int k,int &ans,int &diff){
+    if(root==NULL)return;
+    if(diff>abs(root->val-k)){
+        diff=abs(root->val-k);
+        ans=root->val;
+    }
+    if(k<root->val)helper(root->left,k,ans,diff);
+    else if(k>root->val)helper(root->right,k,ans,diff);
+}
+void solve(TreeNode * root,int k){
+    int ans=root->val;
+    int diff=INT_MAX;
+    helper(root,k,ans,diff);
+    cout<<ans;
 }
 
 int main(){
-    int n;
-    cin>>n;
+    int k,n;
+    cin>>k>>n;
     vector<int> arr(n);
     for(int i=0;i<n;i++){
         int x;
@@ -28,7 +40,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root,k);
 
 }
 

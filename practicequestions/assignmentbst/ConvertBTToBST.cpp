@@ -14,8 +14,29 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
-    
+void inorder01(TreeNode * root,vector<int>& arr){
+    if(!root)return;
+    inorder01(root->left,arr);
+    arr.push_back(root->val);
+
+    inorder01(root->right,arr);
+}
+
+void inorder02(TreeNode * root,vector<int>& arr){
+    static int idx=0;
+    if(!root)return;
+    inorder02(root->left,arr);
+    root->val=arr[idx++];
+    inorder02(root->right,arr);
+}
+
+
+void solve(TreeNode* root){
+    vector<int> arr;
+    inorder01(root,arr);
+    sort(arr.begin(),arr.end());
+    inorder02(root,arr);
+    display(root);
 }
 
 int main(){
@@ -28,7 +49,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root);
 
 }
 
@@ -56,7 +78,7 @@ void display(TreeNode* root){
 
     string s;
     s+=root->left?to_string(root->left->val):".";
-    s+=" => "+to_string(root->val)+" <= ";
+    s+=" <= "+to_string(root->val)+" => ";
     s+=root->right?to_string(root->right->val):".";
 
     cout<<s<<endl;

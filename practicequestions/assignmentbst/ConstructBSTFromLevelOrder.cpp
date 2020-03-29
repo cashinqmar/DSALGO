@@ -14,7 +14,21 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
+TreeNode* levelorderbst(TreeNode * root,int data){
+    if(root==NULL){
+        return new TreeNode(data);
+    }
+
+    if(data<=root->val)root->left=levelorderbst(root->left,data);
+    else root->right=levelorderbst(root->right,data);
+    return root;
+}
+void solve(vector<int>& arr){
+    TreeNode * root=NULL;
+    for(int i=0;i<arr.size();i++){
+        root=levelorderbst(root,arr[i]);
+    }
+    display(root);
     
 }
 
@@ -27,8 +41,9 @@ int main(){
         cin>>x;
         arr[i]=x;
     }
-    TreeNode* root=createlevel(arr);
-    display(root);
+    // TreeNode* root=createlevel(arr);
+    // display(root);
+    solve(arr);
 
 }
 

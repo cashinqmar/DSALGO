@@ -13,14 +13,31 @@ class TreeNode{
 };
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
+bool ans=false;
 
-void solve(){
-    
+void inorder(TreeNode * root,int k){
+    static TreeNode *prev=NULL;
+    if(!root)return;
+    inorder(root->left,k);
+    if(!prev){
+        prev=root;
+    }
+   else if(prev->val==k){
+        cout<<root->val<<" ";
+        ans=true;
+        prev=root;
+    }
+    else prev=root;
+    inorder(root->right,k);
+}
+void solve(TreeNode *root,int k){
+    inorder(root,k);
+    if(!ans)cout<<"Not Found";
 }
 
 int main(){
-    int n;
-    cin>>n;
+    int n,k;
+    cin>>k>>n;
     vector<int> arr(n);
     for(int i=0;i<n;i++){
         int x;
@@ -28,7 +45,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root,k);
 
 }
 

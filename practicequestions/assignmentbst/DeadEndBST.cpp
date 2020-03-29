@@ -13,9 +13,19 @@ class TreeNode{
 };
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
-
-void solve(){
-    
+bool ans=false;
+void helper(TreeNode *root,int lb,int ub){
+    if(root==NULL)return;
+    helper(root->left,lb,root->val);
+    if(root->val==lb+1&&root->val==ub-1){
+        ans=true;
+        cout<<root->val<<" ";
+    }
+    helper(root->right,root->val,ub); 
+} 
+void solve(TreeNode* root){
+    helper(root,0,INT_MAX);
+    if(!ans)cout<<"not found";
 }
 
 int main(){
@@ -28,7 +38,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root);
 
 }
 

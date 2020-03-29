@@ -14,8 +14,17 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
-    
+void modify(TreeNode * root){
+    static int sum=0;
+    if(!root)return;
+    modify(root->right);
+    sum+=root->val;
+    root->val=sum;
+    modify(root->left);
+}
+void solve(TreeNode * root){
+    modify(root);
+    display(root);
 }
 
 int main(){
@@ -28,7 +37,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root);
 
 }
 

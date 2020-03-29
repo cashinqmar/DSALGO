@@ -4,6 +4,7 @@ class TreeNode{
     public:
     TreeNode* left;
     TreeNode* right;
+    TreeNode *parent;
     int val;
     TreeNode(int val){
         left=NULL;
@@ -13,8 +14,16 @@ class TreeNode{
 };
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
+void helper(TreeNode *root,TreeNode *par){
+    if(root==NULL)return;
+    root->parent=par;
+    helper(root->left,root);
+    helper(root->right,root);
+}
 
-void solve(){
+void solve(TreeNode *root){
+helper(root,NULL);
+display(root);
     
 }
 
@@ -28,7 +37,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root);
 
 }
 
@@ -56,7 +66,13 @@ void display(TreeNode* root){
 
     string s;
     s+=root->left?to_string(root->left->val):".";
-    s+=" => "+to_string(root->val)+" <= ";
+    s+=" => "+to_string(root->val);
+    if(root->parent==NULL)s+="[null]";
+    else{
+        s+="["+to_string(root->parent->val)+"]";
+    }
+
+    s+=" <= ";
     s+=root->right?to_string(root->right->val):".";
 
     cout<<s<<endl;

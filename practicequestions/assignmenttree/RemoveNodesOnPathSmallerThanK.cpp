@@ -14,8 +14,21 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
+TreeNode* postorder(TreeNode * root,int level,int k){
+    if(!root)return NULL;
+    root->left=postorder(root->left,level+1,k);
+    root->right=postorder(root->right,level+1,k);
     
+    if(root->left==NULL&&root->right==NULL&&level<k){
+        delete root;
+        return NULL;
+    }
+    return root;
+}
+void solve(TreeNode* root, int k){
+
+    TreeNode* root1=postorder(root,0,k+1);
+    display(root1);
 }
 
 int main(){
@@ -27,8 +40,11 @@ int main(){
         cin>>x;
         arr[i]=x;
     }
+    int k;
+    cin>>k;
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root,k);
 
 }
 
@@ -56,7 +72,7 @@ void display(TreeNode* root){
 
     string s;
     s+=root->left?to_string(root->left->val):".";
-    s+=" => "+to_string(root->val)+" <= ";
+    s+=" <= "+to_string(root->val)+" => ";
     s+=root->right?to_string(root->right->val):".";
 
     cout<<s<<endl;

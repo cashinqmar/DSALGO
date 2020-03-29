@@ -14,13 +14,43 @@ class TreeNode{
 void display(TreeNode*);
 TreeNode* createlevel(vector<int>&);
 
-void solve(){
+int  inordermorris(TreeNode*root,int k){
+    TreeNode * curr=root;
+
+    while(curr!=NULL){
+        if(curr->left==NULL){
+            k--;
+            if(k==0)return curr->val;
+            curr=curr->right;
+        }
+        else{
+            TreeNode * predecessor=curr->left;
+
+            while(predecessor->right!=NULL&&predecessor->right!=curr){
+                predecessor=predecessor->right;
+            }
+
+            if(predecessor->right==NULL){
+                predecessor->right=curr;
+                curr=curr->left;
+            }
+            else{
+                predecessor->right=NULL;
+                 k--;
+            if(k==0)return curr->val;
+            curr=curr->right;
+            }
+        }
+    }
+}
+void solve(TreeNode * root,int k){
+    cout<<inordermorris(root,k);
     
 }
 
 int main(){
-    int n;
-    cin>>n;
+    int n,k;
+    cin>>k>>n;
     vector<int> arr(n);
     for(int i=0;i<n;i++){
         int x;
@@ -28,7 +58,8 @@ int main(){
         arr[i]=x;
     }
     TreeNode* root=createlevel(arr);
-    display(root);
+    // display(root);
+    solve(root,k);
 
 }
 

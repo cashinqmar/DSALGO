@@ -37,6 +37,7 @@ class QueueUsingArray {
 				newData[j] = data[i];
 				j++;
 			}
+
 			delete [] data;
 			data = newData;
 			firstIndex = 0;
@@ -76,64 +77,13 @@ class QueueUsingArray {
 		return ans;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	void display(){
+		int i=firstIndex;
+		int count=0;
+		while(count++<size){
+			cout<<data[i]<<" ";
+			i++;
+			i=i%capacity;
+		}
+	}
 };
