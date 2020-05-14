@@ -1,0 +1,34 @@
+public static int minCut_(int st,int end,int[][] dp,boolean[][] isPalindrome){
+		if(st==end || isPalindrome[st][end]) return dp[st][end]=0; 
+		
+		if(dp[st][end]!=-1) return dp[st][end];
+
+        int min_=(int) 1e8;
+		for(int cut=st;cut<end;cut++){
+			int leftMinCut=isPalindrome[st][cut]?0:minCut_(st,cut,dp,isPalindrome);
+			int rightMinCut=isPalindrome[cut+1][end]?0:minCut_(cut+1,end,dp,isPalindrome);
+
+			int myCost=leftMinCut +  1   + rightMinCut;
+            min_=Math.min(min_,myCost);
+		}
+
+		return dp[st][end]=min_;
+	}
+
+	public static int minCut(String str) {
+		int n=str.length();
+		int[][] dp=new int[n][n];
+		boolean[][] isPalindrome=new boolean[n][n];
+
+		for(int i=0;i<n;i++) for(int j=0;j<n;j++) dp[i][j]=-1;
+
+		for (int gap = 0; gap < n; gap++) {
+			for (int si = 0, ei = gap; ei < n; si++, ei++) {
+				if (gap == 0) isPalindrome[si][ei] = true;
+				else if (str.charAt(si) == str.charAt(ei) && gap == 1) isPalindrome[si][ei] = true;
+				else isPalindrome[si][ei] = str.charAt(si) == str.charAt(ei) && isPalindrome[si + 1][ei - 1];
+			}
+		}
+
+		return minCut_(0,n-1,dp,isPalindrome);
+    }

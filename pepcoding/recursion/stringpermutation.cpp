@@ -30,7 +30,7 @@ int permutation02(string str,string ans){
  return count;
 }
 int main(){
-cout<<permutation01("aba","");
-// cout<<permutation02("aba","");
+// cout<<permutation01("abc","");
+cout<<permutation02("abc","");
 return 0;
 }

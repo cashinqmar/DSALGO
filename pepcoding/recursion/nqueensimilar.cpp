@@ -15,7 +15,7 @@
     }
 int queen2dcomb(vector< vector<bool>>& boxes,int lqpl,int tnq,int qpsf,string ans){
      if(qpsf==tnq){
-        // cout<<ans<<endl;
+        cout<<ans<<endl;
          return 1;
      }
 
@@ -53,6 +53,6 @@ int queen2dcomb(vector< vector<bool>>& boxes,int lqpl,int tnq,int qpsf,string an
     int main(){
         vector< vector<bool>>  boxes(4, vector<bool>(4,false));
     
-        //cout<<queen2dcomb(boxes,0,4,0,"")<<endl;
-          cout<<queen2dperm(boxes,0,4,0,"")<<endl;
+        cout<<queen2dcomb(boxes,0,4,0,"")<<endl;
+        //   cout<<queen2dperm(boxes,0,4,0,"")<<endl;
     }
