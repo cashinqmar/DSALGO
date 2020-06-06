@@ -2,17 +2,19 @@
 using namespace std;
 
 int main(){
-     ios_base::sync_with_stdio(false);
+      ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    vector<vector<pair<long int,long int>>> graph(100005);
-    vector<bool> visited(100005);
-    vector<int> ans(100005,0);
     int n,e;
     cin>>n>>e;
+    vector<vector<pair<long int,long int>>> graph(100005);
+    vector<bool> visited(100005);
+    vector<int> ans(100005,-1);
+    
     for(int i=0;i<e;i++){
-        int x,y,w;
-        cin>>x>>y>>w;
-        graph[x].push_back({y,w});
+        int x,y;
+        cin>>x>>y;
+        graph[x].push_back({y,0});
+        graph[y].push_back({x,1});
     }
    auto comp=[](pair<long int,long int> &a,pair<long int,long int>&b){
        return a.second>b.second;
@@ -36,7 +38,5 @@ int main(){
             }
         }
     }
-    for(int i=2;i<=n;i++)cout<<ans[i]<<" ";
-    cout<<'\n';
-
+  cout<<ans[n]<<"\n";
 }
