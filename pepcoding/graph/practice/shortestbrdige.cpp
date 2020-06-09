@@ -54,8 +54,8 @@ while (!q.empty())
          q.push({{newx,newy},dist+1});
          grid[newx][newy]=2;
      }
-      }
-    }
+  }
+ }
 }
  return 0;
     
