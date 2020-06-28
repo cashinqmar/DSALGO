@@ -88,6 +88,7 @@ vector<int> low(n,0);
 vector<int> dis(n,0);
 vector<bool> art(n,false);
 vector<int> par(n,-1);
+
 for(int i=0;i<n;i++){
     if(!vis[i]){
         dfs(graph,i,low,dis,art,vis,par);
