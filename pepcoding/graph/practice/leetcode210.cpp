@@ -71,7 +71,7 @@ vector<int> findOrder(int n, vector<vector<int>> &prerequisites)
     else
         return {};
 }
-}
+
 int main()
 {
 }

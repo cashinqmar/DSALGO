@@ -2,7 +2,7 @@
 using namespace std;
 
 
-  bool ismatch(string &a,string &b){
+bool ismatch(string &a,string &b){
     int count=0;
     for(int i=0;i<a.size();i++){
         if(a[i]!=b[i])count++;

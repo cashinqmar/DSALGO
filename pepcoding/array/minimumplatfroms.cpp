@@ -25,7 +25,7 @@ int main(){
         int ans=1;
 
         while(i<n){
-            if(arr[i]<dep[j]){
+            if(arr[i]<=dep[j]){
                 platform++;
                  ans=max(ans,platform);
             }
@@ -34,12 +34,7 @@ int main(){
                 j++;
                  ans=max(ans,platform);
             }
-            else{
-                  platform++;
-                 ans=max(ans,platform);
-            }
             i++;
-           
         }
         cout<<ans<<"\n";
     }

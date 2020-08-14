@@ -5,9 +5,8 @@ vector<int> arr(n,true);
 void sieve(){
     for(int i=2;i*i<n;i++){
         if(arr[i]==true){
-            for(int k=2*i;k<n;){
+            for(int k=2*i;k<n;k+=i){
                 arr[k]=false;
-                k+=i;
             }
         }
     }
