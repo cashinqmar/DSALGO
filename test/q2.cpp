@@ -4,103 +4,128 @@ using namespace std;
 
 string ltrim(const string &);
 string rtrim(const string &);
+vector<string> split(const string &);
 
 
 
 /*
- * Complete the 'quicksortMedianOf3Pivots' function below.
+ * Complete the 'minCostPath' function below.
  *
- * The function is expected to return an INTEGER_ARRAY.
- * The function accepts INTEGER_ARRAY a as parameter.
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. WEIGHTED_INTEGER_GRAPH g
+ *  2. INTEGER x
+ *  3. INTEGER y
  */
 
+/*
+ * For the weighted graph, <name>:
+ *
+ * 1. The number of nodes is <name>_nodes.
+ * 2. The number of edges is <name>_edges.
+ * 3. An edge exists between <name>_from[i] and <name>_to[i]. The weight of the edge is <name>_weight[i].
+ *
+ */
 
-void helper(vector<int> a,vector<int> &pivot){
-int n=a.size();
-if(n<3)return;
+int minCostPath(int g_nodes, vector<int> g_from, vector<int> g_to, vector<int> g_weight, int n1, int n2) {
 
-vector<int> three;
-three.push_back(a[0]);
-three.push_back(a[n/2]);
-three.push_back(a[n-1]);
-sort(three.begin(),three.end());
+    if(n1>n2)swap(n1,n2);
+   vector<vector<pair<long int,long int>>> graph(100005);
+    vector<bool> visited(100005,false);
+     vector<int> ans(100005,0);
+for(int i=0;i<g_from.size();i++){
+    int x=g_from[i];
+    int y=g_to[i];
 
-int median=three[1];
-pivot.push_back(median);
-
-vector<int> left;
-vector<int> right;
-
-for(int i=0;i<a.size();i++){
-    if(a[i]<median)left.push_back(a[i]);
-    else if(a[i]>median)right.push_back(a[i]);
+    graph[x].push_back({y,g_weight[i]});
+    graph[y].push_back({x,g_weight[i]});
 }
 
-helper(left,pivot);
-helper(right,pivot);
-return;
-}
-vector<int> quicksortMedianOf3Pivots(vector<int> a) {
-vector<int> pivot;
-helper(a,pivot);
-return pivot;
-}
+ auto comp=[](pair<long int,long int> &a,pair<long int,long int>&b){
+       return a.second>b.second;
+   };
 
-int main()
-{
-    ofstream fout(getenv("OUTPUT_PATH"));
+    priority_queue<pair<long int,long int>,vector<pair<long int,long int>>,decltype(comp)> pq(comp);
+    
+    long long int sum=0;
 
-    string a_count_temp;
-    getline(cin, a_count_temp);
+    pq.push({1,0});
+    while(!pq.empty()){
+        pair<long int,long int> t=pq.top();
+        pq.pop();
 
-    int a_count = stoi(ltrim(rtrim(a_count_temp)));
-
-    vector<int> a(a_count);
-
-    for (int i = 0; i < a_count; i++) {
-        string a_item_temp;
-        getline(cin, a_item_temp);
-
-        int a_item = stoi(ltrim(rtrim(a_item_temp)));
-
-        a[i] = a_item;
-    }
-
-    vector<int> result = quicksortMedianOf3Pivots(a);
-
-    for (int i = 0; i < result.size(); i++) {
-        fout << result[i];
-
-        if (i != result.size() - 1) {
-            fout << "\n";
+        int v=t.first;
+        int w=t.second;
+        if(visited[v])continue;
+        ans[v]=w;
+        visited[v]=true;
+        for(int i=0;i<graph[v].size();i++){
+            if(!visited[graph[v][i].first]){
+             pq.push({graph[v][i].first,graph[v][i].second+w});
+            }
         }
     }
 
-    fout << "\n";
+    sum+=ans[n1];
+    for(int i=1;i<=g_nodes;i++){
+   visited[i]=false;
+   ans[i]=0;
+}
+  priority_queue<pair<long int,long int>,vector<pair<long int,long int>>,decltype(comp)> pq1(comp);
+    
+     pq1.push({n1,0});
+     
+    while(!pq1.empty()){
+        pair<long int,long int> t=pq1.top();
+        pq1.pop();
 
-    fout.close();
+        int v=t.first;
+        int w=t.second;
+    
+        if(visited[v])continue;
+        ans[v]=w;
+        visited[v]=true;
+        for(int i=0;i<graph[v].size();i++){
+            if(!visited[graph[v][i].first]){
+             pq1.push({graph[v][i].first,graph[v][i].second+w});
+            }
+        }
+    }
+    sum+=ans[n2];
+for(int i=1;i<=g_nodes;i++){
+   visited[i]=false;
+   ans[i]=0;
+}
+  priority_queue<pair<long int,long int>,vector<pair<long int,long int>>,decltype(comp)> pq2(comp);
+     visited[g_nodes]=false;
 
-    return 0;
+     pq2.push({n2,0});
+    while(!pq2.empty()){
+        pair<long int,long int> t=pq2.top();
+        pq2.pop();
+
+        int v=t.first;
+        int w=t.second;
+       
+        if(visited[v])continue;
+        ans[v]=w;
+        visited[v]=true;
+        for(int i=0;i<graph[v].size();i++){
+            if(!visited[graph[v][i].first]){
+             pq2.push({graph[v][i].first,graph[v][i].second+w});
+            }
+        }
+    }
+
+sum+=ans[g_nodes];
+
+for(int i=1;i<=g_nodes;i++){
+    cout<<ans[i]<<" ";
+}
+return sum;
+
 }
 
-string ltrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
-    );
-
-    return s;
-}
-
-string rtrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
-    );
-
-    return s;
+int main(){
+    
 }

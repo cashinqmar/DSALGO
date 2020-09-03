@@ -45,4 +45,4 @@ int main(){
         }
         cout<<fixed<<setprecision(2)<<ans<<"\n";
     }
-}
+}k
