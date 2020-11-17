@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package filePackage;
+
+service File {
+    rpc command(Cmd) returns (Out);
+    
+}
+message Path {
+    string path = 1;
+}
+
+message Cmd {
+    string cmd = 1;
+}
+
+message Out {
+    string data = 1;
+}
